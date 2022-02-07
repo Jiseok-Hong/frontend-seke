@@ -1,4 +1,4 @@
-# frontend-loyalty-cms
+# frontend-seke
 
 ## Introduction
 
