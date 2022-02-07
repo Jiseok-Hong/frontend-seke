@@ -1,0 +1,100 @@
+.tabContainer {
+    background-color: $background-color !important;
+    height: 100vh;
+    display: flex !important;
+    transition: 0.5s ease !important;
+    position: fixed !important;
+    top: 0;
+    z-index: 100 !important;
+    @include respond-below(sm) {
+        position: fixed;
+        height: $header-height;
+        width: 100% !important;
+        flex-direction: row !important;
+        position: sticky !important;
+    }
+    .tapWrapper {
+        width: 100%;
+        @include respond-below(sm) {
+            & > div > div {
+                //each categories inside of tab
+                display: flex;
+                justify-content: space-evenly !important;
+            }
+        }
+        .tab {
+            @include respond-below(sm) {
+                width: 15%;
+                height: $header-height;
+                margin: 0 !important;
+            }
+            &:focus {
+                outline: none;
+            }
+            min-height: 30px;
+            & > span {
+                @include respond-below(sm) {
+                    font-size: 10px !important;
+                    flex-direction: column !important;
+                }
+                & > svg {
+                    @include respond-below(sm) {
+                        margin: 0 !important;
+                    }
+                    margin-right: 20px;
+                }
+                flex-direction: row;
+                font-size: 16px;
+                justify-content: flex-start;
+                align-items: center;
+            }
+        }
+        & > div > span {
+            width: 6px;
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+            background-color: $primary-color;
+            & > span {
+                border-top-left-radius: 4px;
+                border-bottom-left-radius: 4px;
+            }
+        }
+    }
+    .link {
+        &:hover {
+            text-decoration: none;
+        }
+    }
+    .tab {
+        text-decoration: none;
+        width: 16.3em;
+        height: 3.5em;
+        margin-left: 2em;
+        border-radius: 5px;
+        opacity: 1;
+        transition: 0.1s ease-in;
+        &:hover {
+            color: $text-color;
+            transform: scale(1.05);
+        }
+    }
+    .logoContainer {
+        display: flex;
+        align-items: center;
+        width: 15em;
+        height: 5em;
+        margin: 2em 0;
+        margin-left: 1em;
+        position: relative;
+        z-index: 1;
+        @include respond-below(sm) {
+            display: none;
+        }
+        .button {
+            width: 2em;
+            height: 2em;
+            color: $primary-color;
+            outline: none;
+        }
+    }
+}

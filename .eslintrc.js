@@ -1,0 +1,67 @@
+module.exports = {
+    env: {
+        browser: true,
+        es6: true,
+    },
+    extends: ['airbnb', 'plugin:import/errors', 'plugin:import/warnings', 'prettier', 'prettier/react'],
+    settings: {
+        'import/resolver': {
+            'babel-module': {},
+        },
+    },
+    globals: {
+        Atomics: 'readonly',
+        SharedArrayBuffer: 'readonly',
+    },
+    parser: 'babel-eslint',
+    parserOptions: {
+        ecmaFeatures: {
+            jsx: true,
+        },
+        ecmaVersion: 2018,
+        sourceType: 'module',
+    },
+    plugins: ['module-resolver', 'react'],
+    rules: {
+        indent: ['error', 4],
+        'react/jsx-indent': ['error', 4],
+        'react/jsx-indent-props': ['error', 4],
+        'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
+        'implicit-arrow-linebreak': 'off',
+        'comma-dangle': 'off',
+        indent: 'off',
+        'no-trailing-spaces': 'off',
+        'jsx-a11y/label-has-for': [
+            2,
+            {
+                required: {
+                    every: ['id'],
+                },
+            },
+        ],
+        'react/forbid-prop-types': 0,
+        'react/button-has-type': 0,
+        'jsx-a11y/alt-text': 0,
+        'import/order': 0,
+        'class-methods-use-this': 0,
+        'react/jsx-fragments': 0,
+        'react/no-did-update-set-state': 0,
+        'prefer-destructuring': 1,
+        'no-unused-vars': 1,
+        'arrow-body-style': 1,
+        'react/prop-types': 0,
+        'object-curly-newline': 0,
+        'jsx-a11y/label-has-for': 0,
+        'jsx-a11y/label-has-associated-control': 0,
+        'react/destructuring-assignment': 0,
+        'dot-notation': 0,
+        'prefer-template': 0,
+        semi: 2,
+        'eol-last': 2,
+        'react/prefer-stateless-function': 0,
+        'react/no-array-index-key': 0,
+        'no-param-reassign': 0,
+        'jsx-a11y/anchor-is-valid': 0,
+        'react/jsx-props-no-spreading': 0,
+    },
+};

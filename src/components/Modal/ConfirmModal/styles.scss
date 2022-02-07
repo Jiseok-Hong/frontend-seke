@@ -1,0 +1,21 @@
+.container {
+    .confirmButton,
+    .cancelButton {
+        background-color: $primary-color;
+        border-color: $primary-color;
+        color: white;
+        &:hover {
+            background-color: rgba($primary-color, 0.9);
+            border-color: rgba($primary-color, 0.9);
+        }
+    }
+    .cancelButton {
+        background-color: $primary-color-lighter;
+        border-color: $secondary-text-color;
+        color: black;
+        &:hover {
+            background-color: rgba($primary-color-lighter, 0.9);
+            border-color: rgba($secondary-text-color, 0.9);
+        }
+    }
+}

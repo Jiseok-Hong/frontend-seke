@@ -1,0 +1,75 @@
+.headerContainer {
+    width: 100%;
+    height: 10vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3em 0;
+    border-bottom: 1px solid $secondary-color-lighter;
+    @include respond-below(sm) {
+        flex-direction: column-reverse;
+        padding-top: 70px;
+        position: relative;
+        padding-bottom: 10px;
+    }
+    .accountContainer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        color: $secondary-text-color;
+        width: 15em;
+
+        .accountIcon {
+            font-size: 30px;
+            margin-left: 5px;
+            @include respond-below(sm) {
+                display: none;
+            }
+        }
+        .userName {
+            white-space: nowrap;
+            @include respond-below(sm) {
+                display: none;
+            }
+        }
+        .logoutButton {
+            outline: none;
+            margin-left: 10px;
+            @include respond-below(sm) {
+                display: none;
+            }
+            .exitIcon {
+                font-size: 30px;
+            }
+        }
+    }
+    .searchBar {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        z-index: 10 !important;
+        .root {
+            padding: 2px 4px;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            z-index: 10 !important;
+            margin-right: 20px;
+            margin-left: 10px;
+            .input {
+                flex: 1;
+                padding-left: 10px;
+            }
+            .iconButton {
+                padding: 10px;
+            }
+            .divider {
+                height: 28px;
+                margin: 4px;
+            }
+        }
+    }
+}

@@ -1,0 +1,10 @@
+.container {
+    :global(.modal-dialog) {
+        max-width: 500px;
+    }
+
+    :global(.modal-header) {
+        background-color: rgba($primary-color, 0.8);
+        border-color: $primary-color;
+    }
+}

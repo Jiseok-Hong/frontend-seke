@@ -1,0 +1,13 @@
+[
+    {
+        "code": "100101",
+        "title": "Not Authenticated",
+        "message": "Please login again [Error code: 100101]",
+        "buttons": [
+            {
+                "text": "OK",
+                "redirect": "/login"
+            }
+        ]
+    }
+]

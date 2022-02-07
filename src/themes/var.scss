@@ -1,0 +1,35 @@
+$primary-color: #f7971e !default;
+$primary-color-lighter: white !default;
+$secondary-color: #183028 !default;
+$secondary-color-lighter: #e1dfe1 !default;
+
+//Added by peter
+$primary-color-hover: #fcd099 !default;
+$background-color: #ffffff !default;
+$secondary-text-color: rgba(79, 73, 64, 0.53) !default;
+$table-background-color: rgba(229, 229, 229, 0.32) !default;
+
+$text-color: $secondary-color !default;
+
+$font-size: 15px;
+$form-font-size: 14px;
+$form-label-font-size: 17px;
+
+$header-height: 60px;
+// $content-width: 1024px;
+$content-width: 72rem;
+
+$border-radius-default: 10px;
+
+$shadow-weak: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;
+$shadow-md: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+$shadow-down: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+$shadow-up: rgba(150, 99, 99, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px,
+    rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+
+$breakpoints: (
+    xs: 576px,
+    sm: 768px,
+    md: 992px,
+    lg: 1024px,
+);
