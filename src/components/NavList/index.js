@@ -19,10 +19,7 @@ function NavList({ children, opens }) {
         </div>
     );
 }
-NavList.propTypes = {
-    children: PropTypes.object,
-    opens: PropTypes.bool,
-};
+
 const mapStateToProps = ({ navbar }) => {
     return { opens: navbar.open };
 };

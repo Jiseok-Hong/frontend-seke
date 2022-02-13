@@ -9,7 +9,6 @@ const checkHealth = () => {
         in_stock: 0,
     };
     const url = `http://localhost:9200/wikipedias/_doc`;
-    console.log(query);
     return RequestService.post(url, {
         data: JSON.stringify(query),
     })

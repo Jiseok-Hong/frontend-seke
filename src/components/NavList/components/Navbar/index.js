@@ -102,7 +102,7 @@ function Navbar(props) {
                     component={Link}
                     to="/"
                     style={{
-                        backgroundColor: path === '/' ? '#f7971e' : '',
+                        backgroundColor: path === '/' ? '#bce2e8' : '',
                         color: path === '/' ? 'white' : 'black',
                     }}
                     label="New Incremental R.F"
@@ -114,10 +114,21 @@ function Navbar(props) {
                     component={Link}
                     to="/old"
                     style={{
-                        backgroundColor: path === '/old' ? '#f7971e' : '',
+                        backgroundColor: path === '/old' ? '#bce2e8' : '',
                         color: path === '/old' ? 'white' : 'black',
                     }}
-                    label="Existing Incremetal R.F"
+                    label="QR"
+                    className={styles.tab}
+                />
+                <Tab
+                    icon={<NoteOutlinedIcon />}
+                    component={Link}
+                    to="/kd"
+                    style={{
+                        backgroundColor: path === '/kd' ? '#bce2e8' : '',
+                        color: path === '/kd' ? 'white' : 'black',
+                    }}
+                    label="Knowledge-based"
                     className={styles.tab}
                 />
             </Tabs>

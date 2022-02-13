@@ -19,7 +19,7 @@
             & > div > div {
                 //each categories inside of tab
                 display: flex;
-                justify-content: space-evenly !important;
+                justify-content: space-between !important;
             }
         }
         .tab {
@@ -37,14 +37,16 @@
                     font-size: 10px !important;
                     flex-direction: column !important;
                 }
+
                 & > svg {
                     @include respond-below(sm) {
                         margin: 0 !important;
                     }
                     margin-right: 20px;
+                    text-align: center;
                 }
                 flex-direction: row;
-                font-size: 16px;
+                font-size: 1em;
                 justify-content: flex-start;
                 align-items: center;
             }

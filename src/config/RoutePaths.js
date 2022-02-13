@@ -1,3 +1,4 @@
+import KnowledgeDatabase from 'pages/KnowledgeDatabase';
 import New from 'pages/New';
 import Old from 'pages/Old';
 
@@ -17,7 +18,16 @@ const OldPaths = {
     },
 };
 
+const KDPaths = {
+    KDTable: {
+        path: '/kd',
+        name: 'KD Table',
+        component: KnowledgeDatabase,
+    },
+};
+
 export default {
     NewPaths,
     OldPaths,
+    KDPaths,
 };
