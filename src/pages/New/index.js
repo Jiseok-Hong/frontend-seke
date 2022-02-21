@@ -1,45 +1,44 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import withConnect from 'utils/withConnect';
 import { withRouter } from 'react-router-dom';
 import NewApi from 'services/api/NewApi';
 import NavList from 'components/NavList';
 import SearchResult from 'components/SearchResult';
 
-function New(props) {
-    const fetchProductList = async () => {
-        const health = await NewApi.checkHealth();
+const New = ({ searchVal }) => {
+    const [results, setResults] = useState();
+    const [loading, setLoading] = useState(false);
+    const [page, setPage] = useState(0);
+    const fetchResultList = async () => {
+        try {
+            setLoading(true);
+            const result = await NewApi.searchNew(searchVal, page);
+            setResults(result);
+        } catch (e) {
+            alert(e);
+        } finally {
+            setLoading(false);
+        }
     };
     useEffect(() => {
-        async function getData() {
-            fetchProductList();
-        }
-        getData();
-    }, []);
-
-    const result = [
-        {
-            title: 'Wikipedia is test',
-            text: "The passage experienced a surge in popularity during the 1960s when Letraset used it on their dry-transfer sheets, and again during the 90s as desktop publishers bundled the text with their software. Today it's seen all around the web; on templates, websites, and stock designs. Use our generator to get your own, or read on for the authoritative history of lorem ipsum.",
-        },
-        {
-            title: 'Wikipedia is test2',
-            text: "The passage experienced a surge in popularity during the 1960s when Letraset used it on their dry-transfer sheets, and again during the 90s as desktop publishers bundled the text with their software. Today it's seen all around the web; on templates, websites, and stock designs. Use our generator to get your own, or read on for the authoritative history of lorem ipsum.",
-        },
-        {
-            title: 'Wikipedia is test3',
-            text: "The passage experienced a surge in popularity during the 1960s when Letraset used it on their dry-transfer sheets, and again during the 90s as desktop publishers bundled the text with their software. Today it's seen all around the web; on templates, websites, and stock designs. Use our generator to get your own, or read on for the authoritative history of lorem ipsum.",
-        },
-        {
-            title: 'Wikipedia is test4',
-            text: "The passage experienced a surge in popularity during the 1960s when Letraset used it on their dry-transfer sheets, and again during the 90s as desktop publishers bundled the text with their software. Today it's seen all around the web; on templates, websites, and stock designs. Use our generator to get your own, or read on for the authoritative history of lorem ipsum.",
-        },
-    ];
+        if (searchVal !== null) fetchResultList();
+    }, [searchVal]);
 
     return (
         <NavList>
-            <SearchResult result={result} />
+            <SearchResult
+                result={results}
+                loading={loading}
+                page={page}
+                setPage={setPage}
+                fetchResultList={fetchResultList}
+            />
         </NavList>
     );
-}
+};
 
-export default withConnect()(withRouter(New));
+const mapStateToProps = ({ search }) => {
+    return { searchVal: search.searchValue };
+};
+
+export default withConnect(mapStateToProps)(withRouter(New));
