@@ -8,6 +8,7 @@ import userReducer from './user/reducer';
 import navbarReducer from './navbar/reducer';
 import searchReducer from './search/reducer';
 import filterReducer from './filter/reducer';
+import searchHistory from './searchHistory/reducer';
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -19,7 +20,7 @@ export default function createReducer(injectedReducers = {}) {
         navbar: navbarReducer,
         search: searchReducer,
         filter: filterReducer,
-
+        history: searchHistory,
         ...injectedReducers,
     });
 

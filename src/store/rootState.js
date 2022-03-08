@@ -4,7 +4,7 @@ import { initialState as navbarState } from 'store/navbar/state';
 import { initialState as searchState } from 'store/search/state';
 import { initialState as snackbarState } from 'store/snackbar/state';
 import { initialState as filterState } from 'store/filter/state';
-
+import { initialState as historyState } from 'store/searchHistory/state';
 const rootState = {
     global: globalState,
     user: userState,
@@ -12,6 +12,7 @@ const rootState = {
     search: searchState,
     snackbar: snackbarState,
     filter: filterState,
+    history: historyState,
 };
 
 export default rootState;

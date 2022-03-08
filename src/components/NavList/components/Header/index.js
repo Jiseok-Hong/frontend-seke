@@ -4,6 +4,7 @@ import withConnect from 'utils/withConnect';
 import { withRouter } from 'react-router-dom';
 import globalActions from 'store/global/actions';
 import searchActions from 'store/search/actions';
+import historyActions from 'store/searchHistory/actions';
 //Matertial ui import
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import IconButton from '@material-ui/core/IconButton';
@@ -43,8 +44,10 @@ function Header({ dispatch, history, searchVal }) {
         setSearchValue(value);
     };
     const handleSubmit = (e) => {
-        event.preventDefault();
-        dispatch(searchActions.searchChange(searchValue));
+        e.preventDefault();
+        const value = new String(searchValue);
+        dispatch(searchActions.searchChange(value));
+        dispatch(historyActions.searchUpdate(value));
     };
 
     return (

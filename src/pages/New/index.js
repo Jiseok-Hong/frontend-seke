@@ -5,12 +5,13 @@ import NewApi from 'services/api/NewApi';
 import NavList from 'components/NavList';
 import SearchResult from 'components/SearchResult';
 
-const New = ({ searchVal }) => {
+const New = ({ searchVal, lib }) => {
     const [results, setResults] = useState();
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(0);
     const fetchResultList = async () => {
         try {
+            console.log(lib[0].times);
             setLoading(true);
             const result = await NewApi.searchNew(searchVal, page);
             setResults(result);
@@ -37,8 +38,8 @@ const New = ({ searchVal }) => {
     );
 };
 
-const mapStateToProps = ({ search }) => {
-    return { searchVal: search.searchValue };
+const mapStateToProps = ({ search, history }) => {
+    return { searchVal: search.searchValue, lib: history.searchHistory };
 };
 
 export default withConnect(mapStateToProps)(withRouter(New));

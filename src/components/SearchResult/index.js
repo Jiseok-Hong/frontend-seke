@@ -6,9 +6,9 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 const SearchResult = ({ result, loading, setPage, page, fetchResultList }) => {
     const toPage = () => {
-        console.log('hui');
+        // console.log('hui');
     };
-    console.log(result?.data);
+    // console.log(result?.data);
 
     const resultArray = result?.data?.hits;
 
@@ -20,7 +20,7 @@ const SearchResult = ({ result, loading, setPage, page, fetchResultList }) => {
     };
 
     const forthHandle = () => {
-        console.log(result?.data.total.value / 10, page);
+        // console.log(result?.data.total.value / 10, page);
         if (page < result?.data.total.value / 10) {
             setPage(page + 1);
             fetchResultList();
@@ -54,7 +54,8 @@ const SearchResult = ({ result, loading, setPage, page, fetchResultList }) => {
                         return (
                             <div key={index}>
                                 <div className={styles.resultCount}>
-                                    Search Result: {page * 10} - {page * 10 + 10} / {result?.data.total.value}
+                                    Search Result: {page > 0 ? page * 10 : 1} - {page * 10 + 10} /{' '}
+                                    {result?.data.total.value}
                                 </div>
                                 <div className={styles.resultContainer} onClick={toPage}>
                                     <div className={styles.resultListNumber}>
