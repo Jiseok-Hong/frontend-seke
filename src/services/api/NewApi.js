@@ -1,15 +1,28 @@
 import RequestService from '../RequestService';
 
-const API_BASE_URL = process.env.REACT_APP_AUTH_API_URL;
+// const API_BASE_URL = process.env.REACT_APP_AUTH_API_URL;
 
 const searchNew = (searchVal, page) => {
     const query = {
         size: 10,
         from: 0 + page * 10,
         query: {
-            multi_match: {
-                query: searchVal,
-                fields: ['title', 'text'],
+            bool: {
+                must: [
+                    {
+                        multi_match: {
+                            query: searchVal,
+                            fields: ['title', 'text'],
+                        },
+                    },
+                ],
+                should: [
+                    {
+                        match: {
+                            query: searchVal,
+                        },
+                    },
+                ],
             },
         },
     };

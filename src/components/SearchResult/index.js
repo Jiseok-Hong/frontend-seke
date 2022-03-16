@@ -5,13 +5,13 @@ import Box from '@mui/material/Box';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 const SearchResult = ({ result, loading, setPage, page, fetchResultList }) => {
-    const toPage = () => {
-        // console.log('hui');
+    const toPage = (path) => {
+        console.log(path);
+        const urlPath = 'https://en.wikipedia.org/wiki/' + path.replace(' ', '_');
+        window.open(urlPath, '_blank');
     };
-    // console.log(result?.data);
 
     const resultArray = result?.data?.hits;
-
     const backHandle = () => {
         if (page > 0) {
             setPage(page - 1);
@@ -57,7 +57,7 @@ const SearchResult = ({ result, loading, setPage, page, fetchResultList }) => {
                                     Search Result: {page > 0 ? page * 10 : 1} - {page * 10 + 10} /{' '}
                                     {result?.data.total.value}
                                 </div>
-                                <div className={styles.resultContainer} onClick={toPage}>
+                                <div className={styles.resultContainer} onClick={() => toPage(e._source.title)}>
                                     <div className={styles.resultListNumber}>
                                         <span className={styles.number}>{index + 1 + page * 10}</span>
                                     </div>
