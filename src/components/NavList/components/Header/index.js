@@ -18,22 +18,8 @@ import ClearIcon from '@material-ui/icons/Clear';
 //Customized navigator from material UI
 
 function Header({ dispatch, history, searchVal }) {
-    const pathname = window.location.pathname;
     const [searchValue, setSearchValue] = useState(searchVal);
-    const handleLogout = (e) => {
-        dispatch(
-            globalActions.showConfirmModal({
-                title: 'Logout',
-                message: 'Are you sure you want to log out? Confirm and Log out',
-                confirmText: 'Yes',
-                cancelText: 'No',
-                confirmCallback: () => {
-                    history.push('/login');
-                },
-                closeCallback: () => {},
-            })
-        );
-    };
+
     const handleClear = (e) => {
         setSearchValue(null);
     };

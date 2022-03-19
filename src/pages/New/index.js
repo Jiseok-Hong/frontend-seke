@@ -11,7 +11,7 @@ const New = ({ searchVal, lib }) => {
     const [results, setResults] = useState();
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(0);
-    const collection = new Map();
+    const [collection, setCollection] = useState(new Map());
     let result;
     const stopWordRemoval = (str) => {
         const res = [];
@@ -26,17 +26,24 @@ const New = ({ searchVal, lib }) => {
     };
     const fetchResultList = async () => {
         try {
-            console.log(lib[0].times);
+            console.log('-------------------------------');
+            console.log('times: ' + lib[0].times);
             setLoading(true);
-            result = await NewApi.searchNew(searchVal, page);
-
+            if (lib[0].times > 1) {
+                result = await NewApi.searchRelevanceNew(searchVal, collection);
+            } else {
+                result = await NewApi.searchNew(searchVal);
+            }
             setResults(result);
         } catch (e) {
             alert(e);
         } finally {
             setLoading(false);
-            const mappedCategorize = result?.data?.hits?.forEach((element) => {
-                element._source.category.forEach((cate) => {
+            collection.clear();
+            let count = 1;
+            for (let element of result?.data?.hits) {
+                count++;
+                const categoryResult = element._source.category.forEach((cate) => {
                     const categorytoWord = stopWordRemoval(cate).split(/[.\-=/_\s]/);
                     categorytoWord.forEach((e) => {
                         const valueLower = stemmer(e).toLowerCase();
@@ -48,15 +55,34 @@ const New = ({ searchVal, lib }) => {
                         }
                     });
                 });
-            });
+                if (count > 10) break;
+            }
+            // const mappedCategorize = result?.data?.hits?.forEach((element) => {
+
+            //     element._source.category.forEach((cate) => {
+            //         const categorytoWord = stopWordRemoval(cate).split(/[.\-=/_\s]/);
+            //         categorytoWord.forEach((e) => {
+            //             const valueLower = stemmer(e).toLowerCase();
+            //             if (collection.get(valueLower) !== undefined) {
+            //                 const count = collection.get(valueLower) + 1;
+            //                 collection.set(valueLower, count);
+            //             } else {
+            //                 collection.set(valueLower, 1);
+            //             }
+            //         });
+            //     });
+
+            // });
+            collection.delete('wikidata');
+            collection.delete('articl');
+            collection.delete('wikipedia');
             collection.forEach((value, key, mapObject) => {
-                if (collection.get(key) < 6) {
+                if (collection.get(key) < 10) {
                     collection.delete(key);
                 } else {
                     console.log('value: ' + value + ' key: ' + key);
                 }
             });
-
             // console.log(collection.size);
         }
     };

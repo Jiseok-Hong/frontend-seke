@@ -6,6 +6,7 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 const SearchResult = ({ result, loading, setPage, page, fetchResultList }) => {
     const toPage = (path) => {
+        // console.log(path);
         const urlPath = 'https://en.wikipedia.org/wiki/' + path.replace(' ', '_');
         window.open(urlPath, '_blank');
     };
