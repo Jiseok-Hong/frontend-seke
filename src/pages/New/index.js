@@ -12,6 +12,7 @@ const New = ({ searchVal, lib }) => {
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(0);
     const [collection, setCollection] = useState(new Map());
+    const [categoryNum, setcategoryNum] = useState(new Map());
     let result;
     const stopWordRemoval = (str) => {
         const res = [];
@@ -24,6 +25,58 @@ const New = ({ searchVal, lib }) => {
         }
         return res.join(' ');
     };
+
+    const categoyCollection = () => {
+        collection.clear();
+        let count = 1;
+        for (let element of result?.data?.hits) {
+            count++;
+            const categoryResult = element._source.category.forEach((cate) => {
+                const categorytoWord = stopWordRemoval(cate).split(/[.\-=/_\s]/);
+                categorytoWord.forEach((e) => {
+                    const valueLower = stemmer(e).toLowerCase();
+                    if (collection.get(valueLower) !== undefined) {
+                        const count = collection.get(valueLower) + 1;
+                        collection.set(valueLower, count);
+                    } else {
+                        collection.set(valueLower, 1);
+                    }
+                });
+            });
+            if (count > 10) break;
+        }
+        collection.delete('wikidata');
+        collection.delete('articl');
+        collection.delete('wikipedia');
+        collection.forEach((value, key, mapObject) => {
+            if (collection.get(key) < 10) {
+                collection.delete(key);
+            }
+        });
+        // console.log(collection.size);
+    };
+
+    const setCategoryNum = () => {
+        categoryNum.clear();
+        const allCateSet = result?.data?.hits.forEach((element) => {
+            let count = 0;
+            let documentId = element._id;
+            element._source.category.forEach((cate) => {
+                // const categorytoWord = stopWordRemoval(cate).split(/[.\-=/_\s]/);
+                // categorytoWord.forEach((e) => {
+                //     const valueLower = stemmer(e).toLowerCase();
+                //     if (collection.get(valueLower) !== undefined) {
+                //         const count = collection.get(valueLower) + 1;
+                //         collection.set(valueLower, count);
+                //     } else {
+                //         collection.set(valueLower, 1);
+                //     }
+                // });
+            });
+            console.log(documentId);
+        });
+    };
+
     const fetchResultList = async () => {
         try {
             console.log('-------------------------------');
@@ -39,51 +92,8 @@ const New = ({ searchVal, lib }) => {
             alert(e);
         } finally {
             setLoading(false);
-            collection.clear();
-            let count = 1;
-            for (let element of result?.data?.hits) {
-                count++;
-                const categoryResult = element._source.category.forEach((cate) => {
-                    const categorytoWord = stopWordRemoval(cate).split(/[.\-=/_\s]/);
-                    categorytoWord.forEach((e) => {
-                        const valueLower = stemmer(e).toLowerCase();
-                        if (collection.get(valueLower) !== undefined) {
-                            const count = collection.get(valueLower) + 1;
-                            collection.set(valueLower, count);
-                        } else {
-                            collection.set(valueLower, 1);
-                        }
-                    });
-                });
-                if (count > 10) break;
-            }
-            // const mappedCategorize = result?.data?.hits?.forEach((element) => {
-
-            //     element._source.category.forEach((cate) => {
-            //         const categorytoWord = stopWordRemoval(cate).split(/[.\-=/_\s]/);
-            //         categorytoWord.forEach((e) => {
-            //             const valueLower = stemmer(e).toLowerCase();
-            //             if (collection.get(valueLower) !== undefined) {
-            //                 const count = collection.get(valueLower) + 1;
-            //                 collection.set(valueLower, count);
-            //             } else {
-            //                 collection.set(valueLower, 1);
-            //             }
-            //         });
-            //     });
-
-            // });
-            collection.delete('wikidata');
-            collection.delete('articl');
-            collection.delete('wikipedia');
-            collection.forEach((value, key, mapObject) => {
-                if (collection.get(key) < 10) {
-                    collection.delete(key);
-                } else {
-                    console.log('value: ' + value + ' key: ' + key);
-                }
-            });
-            // console.log(collection.size);
+            categoyCollection();
+            setCategoryNum();
         }
     };
     useEffect(() => {
