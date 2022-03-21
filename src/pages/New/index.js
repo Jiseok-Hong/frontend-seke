@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import withConnect from 'utils/withConnect';
 import { withRouter } from 'react-router-dom';
 import NewApi from 'services/api/NewApi';
+
 import NavList from 'components/NavList';
 import SearchResult from 'components/SearchResult';
 import { stemmer } from 'stemmer';
@@ -12,7 +13,6 @@ const New = ({ searchVal, lib }) => {
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(0);
     const [collection, setCollection] = useState(new Map());
-    const [categoryNum, setcategoryNum] = useState(new Map());
     let result;
     const stopWordRemoval = (str) => {
         const res = [];
@@ -57,23 +57,20 @@ const New = ({ searchVal, lib }) => {
     };
 
     const setCategoryNum = () => {
-        categoryNum.clear();
         const allCateSet = result?.data?.hits.forEach((element) => {
             let count = 0;
             let documentId = element._id;
             element._source.category.forEach((cate) => {
-                // const categorytoWord = stopWordRemoval(cate).split(/[.\-=/_\s]/);
-                // categorytoWord.forEach((e) => {
-                //     const valueLower = stemmer(e).toLowerCase();
-                //     if (collection.get(valueLower) !== undefined) {
-                //         const count = collection.get(valueLower) + 1;
-                //         collection.set(valueLower, count);
-                //     } else {
-                //         collection.set(valueLower, 1);
-                //     }
-                // });
+                const categorytoWord = stopWordRemoval(cate).split(/[.\-=/_\s]/);
+                categorytoWord.forEach((e) => {
+                    const valueLower = stemmer(e).toLowerCase();
+                    if (collection.has(valueLower)) {
+                        count++;
+                    }
+                });
             });
-            console.log(documentId);
+            console.log('documentID: ' + documentId + ' count: ' + count);
+            NewApi.categoryMatchNum(documentId, count);
         });
     };
 

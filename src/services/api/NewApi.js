@@ -52,9 +52,17 @@ const searchRelevanceNew = (searchVal, collection) => {
         .catch((error) => ({ status: 0, code: error.response && error.response.status, error: error.response }));
 };
 
+const categoryMatchNum = (documentId, count) => {
+    const url = `http://localhost:9200/enwiki/_update/` + documentId;
+    return RequestService.post(url, { script: 'ctx._source.count = ' + count })
+        .then((res) => ({ status: 1, data: res.data.result }))
+        .catch((error) => ({ status: 0, code: error.response && error.response.status, error: error.response }));
+};
+
 const NewApi = {
     searchNew,
     searchRelevanceNew,
+    categoryMatchNum,
 };
 
 export default NewApi;
