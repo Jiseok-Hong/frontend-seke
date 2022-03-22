@@ -12,7 +12,7 @@ const searchNew = (searchVal) => {
                     {
                         multi_match: {
                             query: searchVal,
-                            fields: ['title^2', 'text'],
+                            fields: ['title', 'text'],
                         },
                     },
                 ],
@@ -38,9 +38,22 @@ const searchNew = (searchVal) => {
         .catch((error) => ({ status: 0, code: error.response && error.response.status, error: error.response }));
 };
 
-const searchRelevanceNew = (searchVal, collection) => {
-    const query = {};
-    console.log(collection.size);
+const searchRelevanceNew = (searchVal) => {
+    const query = {
+        query: {
+            script_score: {
+                query: {
+                    multi_match: {
+                        query: searchVal,
+                        fields: ['title', 'text'],
+                    },
+                },
+                script: {
+                    source: "if(!doc['count'].empty) {_score * doc['popularity_score'].value * (doc['count'].value / 3)} else {_score * doc['popularity_score'].value}",
+                },
+            },
+        },
+    };
     const url = `http://localhost:9200/enwiki/_search?search_type=dfs_query_then_fetch`;
     return RequestService.get(url, {
         params: {

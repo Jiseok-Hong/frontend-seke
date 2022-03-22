@@ -80,7 +80,7 @@ const New = ({ searchVal, lib }) => {
             console.log('times: ' + lib[0].times);
             setLoading(true);
             if (lib[0].times > 1) {
-                result = await NewApi.searchRelevanceNew(searchVal, collection);
+                result = await NewApi.searchRelevanceNew(searchVal);
             } else {
                 result = await NewApi.searchNew(searchVal);
             }
