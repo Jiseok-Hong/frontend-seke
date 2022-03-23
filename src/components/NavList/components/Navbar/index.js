@@ -21,6 +21,8 @@ const checkNavi = (pathname) => {
             return 0;
         case '/old':
             return 1;
+        case '/kd':
+            return 2;
         default:
             return 0;
     }
@@ -59,6 +61,7 @@ function Navbar(props) {
     const { dispatch, opens } = props;
 
     const handleChange = (event, newValue) => {
+        console.log(newValue);
         setValue(newValue);
     };
     const closeNav = (event) => {
@@ -105,10 +108,9 @@ function Navbar(props) {
                         backgroundColor: path === '/' ? '#bce2e8' : '',
                         color: path === '/' ? 'white' : 'black',
                     }}
-                    label="New Incremental R.F"
+                    label="Blind Feedback"
                     className={styles.tab}
                 />
-
                 <Tab
                     icon={<NoteOutlinedIcon />}
                     component={Link}
@@ -117,7 +119,7 @@ function Navbar(props) {
                         backgroundColor: path === '/old' ? '#bce2e8' : '',
                         color: path === '/old' ? 'white' : 'black',
                     }}
-                    label="QR"
+                    label="User Feedback"
                     className={styles.tab}
                 />
                 <Tab
@@ -128,7 +130,7 @@ function Navbar(props) {
                         backgroundColor: path === '/kd' ? '#bce2e8' : '',
                         color: path === '/kd' ? 'white' : 'black',
                     }}
-                    label="Knowledge-based"
+                    label="Category Feedback"
                     className={styles.tab}
                 />
             </Tabs>

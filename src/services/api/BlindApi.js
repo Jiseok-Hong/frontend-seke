@@ -40,6 +40,8 @@ const searchNew = (searchVal) => {
 
 const searchRelevanceNew = (searchVal) => {
     const query = {
+        size: 50,
+        from: 0,
         query: {
             script_score: {
                 query: {
@@ -49,7 +51,7 @@ const searchRelevanceNew = (searchVal) => {
                     },
                 },
                 script: {
-                    source: "if(!doc['count'].empty) {_score * doc['popularity_score'].value * (doc['count'].value / 3)} else {_score * doc['popularity_score'].value}",
+                    source: "if(!doc['count'].empty) {_score * (doc['popularity_score'].value / 10000) * doc['count'].value } else {_score * 0.0004}",
                 },
             },
         },

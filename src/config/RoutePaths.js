@@ -1,6 +1,6 @@
-import KnowledgeDatabase from 'pages/KnowledgeDatabase';
-import New from 'pages/New';
-import Old from 'pages/Old';
+import KnowledgeDatabase from 'pages/UserFeedback';
+import New from 'pages/BRF';
+import Old from 'pages/CategoryFeedback';
 
 const NewPaths = {
     NewTable: {

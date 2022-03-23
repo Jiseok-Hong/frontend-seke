@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import withConnect from 'utils/withConnect';
 import { withRouter } from 'react-router-dom';
-import NewApi from 'services/api/NewApi';
+import NewApi from 'services/api/BlindApi';
 
 import NavList from 'components/NavList';
 import SearchResult from 'components/SearchResult';
 import { stemmer } from 'stemmer';
 import stopwords from 'services/stopWords';
 
-const New = ({ searchVal, lib }) => {
+const BRF = ({ searchVal, lib }) => {
     const [results, setResults] = useState();
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(0);
@@ -69,7 +69,7 @@ const New = ({ searchVal, lib }) => {
                     }
                 });
             });
-            console.log('documentID: ' + documentId + ' count: ' + count);
+            // console.log('documentID: ' + documentId + ' count: ' + count);
             NewApi.categoryMatchNum(documentId, count);
         });
     };
@@ -85,12 +85,16 @@ const New = ({ searchVal, lib }) => {
                 result = await NewApi.searchNew(searchVal);
             }
             setResults(result);
+            if (result.status === 0) {
+                throw 'data is not found';
+            } else {
+                categoyCollection();
+                setCategoryNum();
+            }
         } catch (e) {
             alert(e);
         } finally {
             setLoading(false);
-            categoyCollection();
-            setCategoryNum();
         }
     };
     useEffect(() => {
@@ -114,4 +118,4 @@ const mapStateToProps = ({ search, history }) => {
     return { searchVal: search.searchValue, lib: history.searchHistory };
 };
 
-export default withConnect(mapStateToProps)(withRouter(New));
+export default withConnect(mapStateToProps)(withRouter(BRF));
