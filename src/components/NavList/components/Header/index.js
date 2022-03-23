@@ -70,10 +70,6 @@ function Header({ dispatch, history, searchVal }) {
     );
 }
 
-Header.propTypes = {
-    searchVal: PropTypes.string,
-};
-
 const mapStateToProps = ({ search }) => {
     return { searchVal: search.searchValue };
 };

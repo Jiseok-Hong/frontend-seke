@@ -61,7 +61,6 @@ function Navbar(props) {
     const { dispatch, opens } = props;
 
     const handleChange = (event, newValue) => {
-        console.log(newValue);
         setValue(newValue);
     };
     const closeNav = (event) => {

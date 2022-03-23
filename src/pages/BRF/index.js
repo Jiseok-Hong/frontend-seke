@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import withConnect from 'utils/withConnect';
 import { withRouter } from 'react-router-dom';
 import NewApi from 'services/api/BlindApi';
-
+import historyActions from 'store/searchHistory/actions';
+import searchActions from 'store/search/actions';
 import NavList from 'components/NavList';
 import SearchResult from 'components/SearchResult';
 import { stemmer } from 'stemmer';
 import stopwords from 'services/stopWords';
 
-const BRF = ({ searchVal, lib }) => {
+const BRF = ({ dispatch, searchVal, lib }) => {
     const [results, setResults] = useState();
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(0);
@@ -97,6 +98,7 @@ const BRF = ({ searchVal, lib }) => {
             setLoading(false);
         }
     };
+
     useEffect(() => {
         if (searchVal !== null) fetchResultList();
     }, [searchVal]);
