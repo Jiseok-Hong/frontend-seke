@@ -6,7 +6,16 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
-const SearchResult = ({ result, loading, setPage, page, fetchResultList, userFeedback }) => {
+const SearchResult = ({
+    result,
+    loading,
+    setPage,
+    page,
+    fetchResultList,
+    userFeedback,
+    relevantDocs,
+    setRelevantDocs,
+}) => {
     const toPage = (path) => {
         // console.log(path);
         const urlPath = 'https://en.wikipedia.org/wiki/' + path.replace(' ', '_');
@@ -36,6 +45,11 @@ const SearchResult = ({ result, loading, setPage, page, fetchResultList, userFee
             fetchResultList();
         }
     };
+    React.useEffect(() => {
+        setValue(Array(50).fill(0));
+        setHover(Array(50).fill(-1));
+        setRelevantDocs(new Set());
+    }, [loading]);
     if (loading) {
         return (
             <div className={styles.container}>
@@ -45,6 +59,7 @@ const SearchResult = ({ result, loading, setPage, page, fetchResultList, userFee
             </div>
         );
     }
+
     return (
         <div className={styles.container}>
             {resultArray?.length !== 0 ? (
@@ -92,6 +107,10 @@ const SearchResult = ({ result, loading, setPage, page, fetchResultList, userFee
                                                     const changearray = value;
                                                     changearray[index] = newValue;
                                                     setValue([...changearray]);
+                                                    if (newValue > 2) {
+                                                        relevantDocs.add(e._id);
+                                                    }
+                                                    console.log(relevantDocs);
                                                 }}
                                                 onChangeActive={(event, newHover) => {
                                                     const changearray = hover;

@@ -14,7 +14,8 @@ const UserFeedback = ({ dispatch, searchVal, lib }) => {
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(0);
     const [collection, setCollection] = useState(new Map());
-    let result;
+    const [relevantDocs, setRelevantDocs] = React.useState(new Set());
+    let [result, setResult] = useState();
     const stopWordRemoval = (str) => {
         const res = [];
         const words = str.split(' ');
@@ -29,36 +30,35 @@ const UserFeedback = ({ dispatch, searchVal, lib }) => {
 
     const categoyCollection = () => {
         collection.clear();
-        let count = 1;
-        for (let element of result?.data?.hits) {
-            count++;
-            const categoryResult = element._source.category.forEach((cate) => {
-                const categorytoWord = stopWordRemoval(cate).split(/[.\-=/_\s]/);
-                categorytoWord.forEach((e) => {
-                    const valueLower = stemmer(e).toLowerCase();
-                    if (collection.get(valueLower) !== undefined) {
-                        const count = collection.get(valueLower) + 1;
-                        collection.set(valueLower, count);
-                    } else {
-                        collection.set(valueLower, 1);
-                    }
+        for (let element of results?.data?.hits) {
+            const documentID = element._id;
+            if (relevantDocs.has(documentID)) {
+                const categoryResult = element._source.category.forEach((cate) => {
+                    const categorytoWord = stopWordRemoval(cate).split(/[.\-=/_\s]/);
+                    categorytoWord.forEach((e) => {
+                        const valueLower = stemmer(e).toLowerCase();
+                        if (collection.get(valueLower) !== undefined) {
+                            const count = collection.get(valueLower) + 1;
+                            collection.set(valueLower, count);
+                        } else {
+                            collection.set(valueLower, 1);
+                        }
+                    });
                 });
-            });
-            if (count > 10) break;
+            }
         }
         collection.delete('wikidata');
         collection.delete('articl');
         collection.delete('wikipedia');
         collection.forEach((value, key, mapObject) => {
-            if (collection.get(key) < 10) {
+            if (collection.get(key) < 5) {
                 collection.delete(key);
             }
         });
         // console.log(collection.size);
     };
-
     const setCategoryNum = () => {
-        const allCateSet = result?.data?.hits.forEach((element) => {
+        const allCateSet = results?.data?.hits.forEach((element) => {
             let count = 0;
             let documentId = element._id;
             element._source.category.forEach((cate) => {
@@ -81,6 +81,9 @@ const UserFeedback = ({ dispatch, searchVal, lib }) => {
             console.log('times: ' + lib[0].times);
             setLoading(true);
             if (lib[0].times > 1) {
+                console.log(results);
+                await categoyCollection();
+                await setCategoryNum();
                 result = await NewApi.searchRelevanceNew(searchVal);
             } else {
                 result = await NewApi.searchNew(searchVal);
@@ -88,9 +91,6 @@ const UserFeedback = ({ dispatch, searchVal, lib }) => {
             setResults(result);
             if (result.status === 0) {
                 throw 'data is not found';
-            } else {
-                categoyCollection();
-                setCategoryNum();
             }
         } catch (e) {
             alert(e);
@@ -112,6 +112,8 @@ const UserFeedback = ({ dispatch, searchVal, lib }) => {
                 setPage={setPage}
                 fetchResultList={fetchResultList}
                 userFeedback={true}
+                relevantDocs={relevantDocs}
+                setRelevantDocs={setRelevantDocs}
             />
         </NavList>
     );
