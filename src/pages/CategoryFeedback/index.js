@@ -141,6 +141,7 @@ const CategoryFeedback = ({ dispatch, searchVal, lib }) => {
             setLoading(false);
         }
     };
+
     useEffect(() => {
         if (searchVal !== null) fetchResultList();
     }, [searchVal]);

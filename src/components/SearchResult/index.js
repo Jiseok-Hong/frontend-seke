@@ -4,13 +4,23 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-const SearchResult = ({ result, loading, setPage, page, fetchResultList }) => {
+import Rating from '@mui/material/Rating';
+import StarIcon from '@mui/icons-material/Star';
+const SearchResult = ({ result, loading, setPage, page, fetchResultList, userFeedback }) => {
     const toPage = (path) => {
         // console.log(path);
         const urlPath = 'https://en.wikipedia.org/wiki/' + path.replace(' ', '_');
         window.open(urlPath, '_blank');
     };
-
+    const [value, setValue] = React.useState(Array(50).fill(0));
+    const [hover, setHover] = React.useState(Array(50).fill(-1));
+    const labels = {
+        1: 'Useless+',
+        2: 'Poor+',
+        3: 'Ok+',
+        4: 'Good+',
+        5: 'Excellent+',
+    };
     const resultArray = result?.data?.hits;
     const backHandle = () => {
         if (page > 0) {
@@ -35,7 +45,6 @@ const SearchResult = ({ result, loading, setPage, page, fetchResultList }) => {
             </div>
         );
     }
-
     return (
         <div className={styles.container}>
             {resultArray?.length !== 0 ? (
@@ -65,6 +74,39 @@ const SearchResult = ({ result, loading, setPage, page, fetchResultList }) => {
                                         <h5 className={styles.resultTitle}>{e._source.title}</h5>
                                         <p>{e._source.text.substr(0, 700) + '...'}</p>
                                     </div>
+                                </div>
+                                <div className={styles.rating}>
+                                    {userFeedback && (
+                                        <Box
+                                            sx={{
+                                                width: 200,
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <Rating
+                                                name="hover-feedback"
+                                                value={value[index]}
+                                                precision={1}
+                                                onChange={(event, newValue) => {
+                                                    const changearray = value;
+                                                    changearray[index] = newValue;
+                                                    setValue([...changearray]);
+                                                }}
+                                                onChangeActive={(event, newHover) => {
+                                                    const changearray = hover;
+                                                    changearray[index] = newHover;
+                                                    setHover([...changearray]);
+                                                }}
+                                                emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+                                            />
+                                            {value[index] !== null && (
+                                                <Box sx={{ ml: 2 }}>
+                                                    {labels[hover[index] !== -1 ? hover[index] : value[index]]}
+                                                </Box>
+                                            )}
+                                        </Box>
+                                    )}
                                 </div>
                             </div>
                         );
