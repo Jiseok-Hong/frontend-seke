@@ -16,13 +16,6 @@ const searchNew = (searchVal) => {
                         },
                     },
                 ],
-                should: [
-                    {
-                        match: {
-                            query: searchVal,
-                        },
-                    },
-                ],
             },
         },
     };

@@ -46,9 +46,11 @@ const SearchResult = ({
         }
     };
     React.useEffect(() => {
-        setValue(Array(50).fill(0));
-        setHover(Array(50).fill(-1));
-        setRelevantDocs(new Set());
+        if (userFeedback) {
+            setValue(Array(50).fill(0));
+            setHover(Array(50).fill(-1));
+            setRelevantDocs(new Set());
+        }
     }, [loading]);
     if (loading) {
         return (
