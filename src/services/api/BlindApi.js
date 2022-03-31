@@ -13,6 +13,18 @@ const searchNew = (searchVal) => {
                         multi_match: {
                             query: searchVal,
                             fields: ['title', 'text'],
+                            fuzziness: 1,
+                        },
+                    },
+                ],
+                should: [
+                    {
+                        multi_match: {
+                            query: searchVal,
+                            type: 'phrase',
+                            slop: 10,
+                            fields: ['title', 'text'],
+                            fuzziness: 1,
                         },
                     },
                 ],
@@ -38,9 +50,27 @@ const searchRelevanceNew = (searchVal) => {
         query: {
             script_score: {
                 query: {
-                    multi_match: {
-                        query: searchVal,
-                        fields: ['title', 'text'],
+                    bool: {
+                        must: [
+                            {
+                                multi_match: {
+                                    query: searchVal,
+                                    fields: ['title', 'text'],
+                                    fuzziness: 1,
+                                },
+                            },
+                        ],
+                        should: [
+                            {
+                                multi_match: {
+                                    query: searchVal,
+                                    type: 'phrase',
+                                    slop: 10,
+                                    fields: ['title', 'text'],
+                                    fuzziness: 1,
+                                },
+                            },
+                        ],
                     },
                 },
                 script: {
