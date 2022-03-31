@@ -89,7 +89,10 @@ const SearchResult = ({
                                     </div>
                                     <div className={styles.resultbody}>
                                         <h5 className={styles.resultTitle}>{e._source.title}</h5>
-                                        <p>{e._source.text.substr(0, 700) + '...'}</p>
+                                        <p>{e._source.text.substr(0, 400) + '...'}</p>
+                                        {e.highlight.text.map((e) => (
+                                            <span dangerouslySetInnerHTML={{ __html: e }} />
+                                        ))}
                                     </div>
                                 </div>
                                 <div className={styles.rating}>

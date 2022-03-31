@@ -13,7 +13,7 @@ const searchNew = (searchVal) => {
                         multi_match: {
                             query: searchVal,
                             fields: ['title', 'text'],
-                            fuzziness: 1,
+                            fuzziness: 'AUTO',
                         },
                     },
                 ],
@@ -24,10 +24,16 @@ const searchNew = (searchVal) => {
                             type: 'phrase',
                             slop: 10,
                             fields: ['title', 'text'],
-                            fuzziness: 1,
                         },
                     },
                 ],
+            },
+        },
+        highlight: {
+            pre_tags: ['<strong>'],
+            post_tags: ['</strong>'],
+            fields: {
+                text: {},
             },
         },
     };
@@ -56,7 +62,7 @@ const searchRelevanceNew = (searchVal) => {
                                 multi_match: {
                                     query: searchVal,
                                     fields: ['title', 'text'],
-                                    fuzziness: 1,
+                                    fuzziness: 'AUTO',
                                 },
                             },
                         ],
@@ -67,15 +73,19 @@ const searchRelevanceNew = (searchVal) => {
                                     type: 'phrase',
                                     slop: 10,
                                     fields: ['title', 'text'],
-                                    fuzziness: 1,
                                 },
                             },
                         ],
                     },
                 },
                 script: {
-                    source: "if(!doc['count'].empty) {_score * (doc['popularity_score'].value / 10000) * doc['count'].value } else {_score * 0.0004}",
+                    source: "if(!doc['count'].empty) {_score * (doc['popularity_score'].value / 10000) * doc['count'].value + (doc['incoming_links']/10) } else {_score * 0.0004}",
                 },
+            },
+        },
+        highlight: {
+            fields: {
+                text: {},
             },
         },
     };
