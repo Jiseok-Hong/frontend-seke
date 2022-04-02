@@ -12,7 +12,6 @@ import stopwords from 'services/stopWords';
 const UserFeedback = ({ dispatch, searchVal, lib }) => {
     const [results, setResults] = useState();
     const [loading, setLoading] = useState(false);
-    const [page, setPage] = useState(0);
     const [collection, setCollection] = useState(new Map());
     const [relevantDocs, setRelevantDocs] = React.useState(new Set());
     let [result, setResult] = useState();
@@ -108,8 +107,6 @@ const UserFeedback = ({ dispatch, searchVal, lib }) => {
             <SearchResult
                 result={results}
                 loading={loading}
-                page={page}
-                setPage={setPage}
                 fetchResultList={fetchResultList}
                 userFeedback={true}
                 relevantDocs={relevantDocs}

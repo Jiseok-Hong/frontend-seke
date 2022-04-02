@@ -12,7 +12,6 @@ import stopwords from 'services/stopWords';
 const CategoryFeedback = ({ dispatch, searchVal, lib }) => {
     const [results, setResults] = useState();
     const [loading, setLoading] = useState(false);
-    const [page, setPage] = useState(0);
     const [relevantCollection, setrelevantCollection] = useState(new Map());
     let result;
     const stopWordRemoval = (str) => {
@@ -148,13 +147,7 @@ const CategoryFeedback = ({ dispatch, searchVal, lib }) => {
 
     return (
         <NavList>
-            <SearchResult
-                result={results}
-                loading={loading}
-                page={page}
-                setPage={setPage}
-                fetchResultList={fetchResultList}
-            />
+            <SearchResult result={results} loading={loading} fetchResultList={fetchResultList} />
         </NavList>
     );
 };

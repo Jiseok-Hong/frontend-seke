@@ -6,16 +6,7 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
-const SearchResult = ({
-    result,
-    loading,
-    setPage,
-    page,
-    fetchResultList,
-    userFeedback,
-    relevantDocs,
-    setRelevantDocs,
-}) => {
+const SearchResult = ({ result, loading, fetchResultList, userFeedback, relevantDocs, setRelevantDocs }) => {
     const toPage = (path) => {
         // console.log(path);
         const urlPath = 'https://en.wikipedia.org/wiki/' + path.replace(' ', '_');
@@ -23,6 +14,7 @@ const SearchResult = ({
     };
     const [value, setValue] = React.useState(Array(50).fill(0));
     const [hover, setHover] = React.useState(Array(50).fill(-1));
+    const [page, setPage] = React.useState(0);
     const labels = {
         1: 'Useless+',
         2: 'Poor+',
@@ -34,15 +26,13 @@ const SearchResult = ({
     const backHandle = () => {
         if (page > 0) {
             setPage(page - 1);
-            fetchResultList();
         }
     };
 
     const forthHandle = () => {
         // console.log(result?.data.total.value / 10, page);
-        if (page < result?.data.total.value / 10) {
+        if (page < 4) {
             setPage(page + 1);
-            fetchResultList();
         }
     };
     React.useEffect(() => {
@@ -76,12 +66,11 @@ const SearchResult = ({
                             </div>
                         </>
                     )}
-                    {resultArray?.map((e, index) => {
+                    {resultArray?.slice(page * 10, page * 10 + 10)?.map((e, index) => {
                         return (
                             <div key={index}>
                                 <div className={styles.resultCount}>
-                                    Search Result: {page > 0 ? page * 10 : 1} - {page * 10 + 10} /{' '}
-                                    {result?.data.total.value}
+                                    Search Result: {page > 0 ? page * 10 : 1} - {page * 10 + 10} / 50
                                 </div>
                                 <div className={styles.resultContainer} onClick={() => toPage(e._source.title)}>
                                     <div className={styles.resultListNumber}>
@@ -115,7 +104,6 @@ const SearchResult = ({
                                                     if (newValue > 2) {
                                                         relevantDocs.add(e._id);
                                                     }
-                                                    console.log(relevantDocs);
                                                 }}
                                                 onChangeActive={(event, newHover) => {
                                                     const changearray = hover;
