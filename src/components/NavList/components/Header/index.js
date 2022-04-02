@@ -38,6 +38,7 @@ function Header({ dispatch, history, searchVal }) {
 
     return (
         <header className={styles.headerContainer}>
+            <h2 className={styles.heading}>Search Engine for Knowledge Exploration</h2>
             <div className={styles.searchBar}>
                 <Paper component="form" className={styles.root} onSubmit={handleSubmit}>
                     <InputBase

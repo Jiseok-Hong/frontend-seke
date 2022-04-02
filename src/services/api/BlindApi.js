@@ -3,40 +3,76 @@ import RequestService from '../RequestService';
 // const API_BASE_URL = process.env.REACT_APP_AUTH_API_URL;
 
 const searchNew = (searchVal) => {
-    const query = {
-        size: 50,
-        from: 0,
-        query: {
-            bool: {
-                must: [
-                    {
-                        multi_match: {
-                            query: searchVal,
-                            fields: ['title', 'text'],
-                            fuzziness: 'AUTO',
-                        },
-                    },
-                ],
-                should: [
-                    {
-                        multi_match: {
-                            query: searchVal,
-                            type: 'phrase',
-                            slop: 10,
-                            fields: ['title', 'text'],
-                        },
-                    },
-                ],
-            },
-        },
-        highlight: {
-            pre_tags: ['<strong>'],
-            post_tags: ['</strong>'],
-            fields: {
-                text: {},
-            },
-        },
-    };
+    const query =
+        searchVal.split(' ').length < 3
+            ? {
+                  size: 50,
+                  from: 0,
+                  query: {
+                      bool: {
+                          must: [
+                              {
+                                  multi_match: {
+                                      query: searchVal,
+                                      fields: ['title^2', 'text^1.8'],
+                                      fuzziness: 'AUTO',
+                                  },
+                              },
+                          ],
+                          should: [
+                              {
+                                  multi_match: {
+                                      query: searchVal,
+                                      type: 'phrase',
+                                      slop: 10,
+                                      fields: ['title^2', 'text^1.8'],
+                                  },
+                              },
+                          ],
+                      },
+                  },
+                  highlight: {
+                      pre_tags: ['<strong>'],
+                      post_tags: ['</strong>'],
+                      fields: {
+                          text: {},
+                      },
+                  },
+              }
+            : {
+                  size: 50,
+                  from: 0,
+                  query: {
+                      bool: {
+                          must: [
+                              {
+                                  multi_match: {
+                                      query: searchVal,
+                                      fields: ['title^1.8', 'text^2'],
+                                      fuzziness: 'AUTO',
+                                  },
+                              },
+                          ],
+                          should: [
+                              {
+                                  multi_match: {
+                                      query: searchVal,
+                                      type: 'phrase',
+                                      slop: 10,
+                                      fields: ['title^1.8', 'text^2'],
+                                  },
+                              },
+                          ],
+                      },
+                  },
+                  highlight: {
+                      pre_tags: ['<strong>'],
+                      post_tags: ['</strong>'],
+                      fields: {
+                          text: {},
+                      },
+                  },
+              };
 
     const url = `http://localhost:9200/enwiki/_search?search_type=dfs_query_then_fetch`;
     return RequestService.get(url, {
@@ -50,45 +86,90 @@ const searchNew = (searchVal) => {
 };
 
 const searchRelevanceNew = (searchVal) => {
-    const query = {
-        size: 50,
-        from: 0,
-        query: {
-            script_score: {
-                query: {
-                    bool: {
-                        must: [
-                            {
-                                multi_match: {
-                                    query: searchVal,
-                                    fields: ['title', 'text'],
-                                    fuzziness: 'AUTO',
-                                },
-                            },
-                        ],
-                        should: [
-                            {
-                                multi_match: {
-                                    query: searchVal,
-                                    type: 'phrase',
-                                    slop: 10,
-                                    fields: ['title', 'text'],
-                                },
-                            },
-                        ],
-                    },
-                },
-                script: {
-                    source: "if(!doc['count'].empty) {_score * (doc['popularity_score'].value / 10000) * doc['count'].value + (doc['incoming_links']/10) } else {_score * 0.0004}",
-                },
-            },
-        },
-        highlight: {
-            fields: {
-                text: {},
-            },
-        },
-    };
+    const query =
+        searchVal.split(' ').length < 3
+            ? {
+                  size: 50,
+                  from: 0,
+                  query: {
+                      script_score: {
+                          query: {
+                              bool: {
+                                  must: [
+                                      {
+                                          multi_match: {
+                                              query: searchVal,
+                                              fields: ['title^2', 'text^1.8'],
+                                              fuzziness: 'AUTO',
+                                          },
+                                      },
+                                  ],
+                                  should: [
+                                      {
+                                          multi_match: {
+                                              query: searchVal,
+                                              type: 'phrase',
+                                              slop: 10,
+                                              fields: ['title^2', 'text^1.8'],
+                                          },
+                                      },
+                                  ],
+                              },
+                          },
+                          script: {
+                              source: "if(!doc['count'].empty) {_score * (doc['popularity_score'].value / 10000) * doc['count'].value + doc['incoming_links'].value / 10 } else {_score * 0.0004}",
+                          },
+                      },
+                  },
+                  highlight: {
+                      pre_tags: ['<strong>'],
+                      post_tags: ['</strong>'],
+                      fields: {
+                          text: {},
+                      },
+                  },
+              }
+            : {
+                  size: 50,
+                  from: 0,
+                  query: {
+                      script_score: {
+                          query: {
+                              bool: {
+                                  must: [
+                                      {
+                                          multi_match: {
+                                              query: searchVal,
+                                              fields: ['title^1.8', 'text^2'],
+                                              fuzziness: 'AUTO',
+                                          },
+                                      },
+                                  ],
+                                  should: [
+                                      {
+                                          multi_match: {
+                                              query: searchVal,
+                                              type: 'phrase',
+                                              slop: 10,
+                                              fields: ['title^1.8', 'text^2'],
+                                          },
+                                      },
+                                  ],
+                              },
+                          },
+                          script: {
+                              source: "if(!doc['count'].empty) {_score * (doc['popularity_score'].value / 10000) * doc['count'].value + doc['incoming_links'].value / 10 } else {_score * 0.0004}",
+                          },
+                      },
+                  },
+                  highlight: {
+                      pre_tags: ['<strong>'],
+                      post_tags: ['</strong>'],
+                      fields: {
+                          text: {},
+                      },
+                  },
+              };
     const url = `http://localhost:9200/enwiki/_search?search_type=dfs_query_then_fetch`;
     return RequestService.get(url, {
         params: {
