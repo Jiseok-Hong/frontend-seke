@@ -9,26 +9,31 @@ const searchNew = (searchVal) => {
                   size: 50,
                   from: 0,
                   query: {
-                      bool: {
-                          must: [
-                              {
-                                  multi_match: {
-                                      query: searchVal,
-                                      fields: ['title^2', 'text^1.8'],
-                                      fuzziness: 'AUTO',
+                      script_score: {
+                          bool: {
+                              must: [
+                                  {
+                                      multi_match: {
+                                          query: searchVal,
+                                          fields: ['title^2', 'text^1.8'],
+                                          fuzziness: 'AUTO',
+                                      },
                                   },
-                              },
-                          ],
-                          should: [
-                              {
-                                  multi_match: {
-                                      query: searchVal,
-                                      type: 'phrase',
-                                      slop: 10,
-                                      fields: ['title^2', 'text^1.8'],
+                              ],
+                              should: [
+                                  {
+                                      multi_match: {
+                                          query: searchVal,
+                                          type: 'phrase',
+                                          slop: 10,
+                                          fields: ['title^2', 'text^1.8'],
+                                      },
                                   },
-                              },
-                          ],
+                              ],
+                          },
+                          script: {
+                              source: "_score * (doc['incoming_links'].value / 100)",
+                          },
                       },
                   },
                   highlight: {
@@ -43,26 +48,31 @@ const searchNew = (searchVal) => {
                   size: 50,
                   from: 0,
                   query: {
-                      bool: {
-                          must: [
-                              {
-                                  multi_match: {
-                                      query: searchVal,
-                                      fields: ['title^1.8', 'text^2'],
-                                      fuzziness: 'AUTO',
+                      script_score: {
+                          bool: {
+                              must: [
+                                  {
+                                      multi_match: {
+                                          query: searchVal,
+                                          fields: ['title^1.8', 'text^2'],
+                                          fuzziness: 'AUTO',
+                                      },
                                   },
-                              },
-                          ],
-                          should: [
-                              {
-                                  multi_match: {
-                                      query: searchVal,
-                                      type: 'phrase',
-                                      slop: 10,
-                                      fields: ['title^1.8', 'text^2'],
+                              ],
+                              should: [
+                                  {
+                                      multi_match: {
+                                          query: searchVal,
+                                          type: 'phrase',
+                                          slop: 10,
+                                          fields: ['title^1.8', 'text^2'],
+                                      },
                                   },
-                              },
-                          ],
+                              ],
+                          },
+                          script: {
+                              source: "_score * (doc['incoming_links'].value / 100)",
+                          },
                       },
                   },
                   highlight: {
@@ -117,7 +127,7 @@ const searchRelevanceNew = (searchVal) => {
                               },
                           },
                           script: {
-                              source: "if(!doc['count'].empty) {_score * (doc['popularity_score'].value / 10000) * doc['count'].value + doc['incoming_links'].value / 10 } else {_score * 0.0004}",
+                              source: "if(!doc['count'].empty) {_score * (doc['incoming_links'].value / 100) * (doc['popularity_score'].value / 10000) * doc['count'].value} else {_score * (doc['incoming_links'].value / 100)}",
                           },
                       },
                   },
@@ -158,7 +168,7 @@ const searchRelevanceNew = (searchVal) => {
                               },
                           },
                           script: {
-                              source: "if(!doc['count'].empty) {_score * (doc['popularity_score'].value / 10000) * doc['count'].value + doc['incoming_links'].value / 10 } else {_score * 0.0004}",
+                              source: "if(!doc['count'].empty) {_score * (doc['incoming_links'].value / 100) * (doc['popularity_score'].value / 10000) * doc['count'].value} else {_score * (doc['incoming_links'].value / 100)}",
                           },
                       },
                   },
