@@ -10,29 +10,31 @@ const searchNew = (searchVal) => {
                   from: 0,
                   query: {
                       script_score: {
-                          bool: {
-                              must: [
-                                  {
-                                      multi_match: {
-                                          query: searchVal,
-                                          fields: ['title^2', 'text^1.8'],
-                                          fuzziness: 'AUTO',
+                          query: {
+                              bool: {
+                                  must: [
+                                      {
+                                          multi_match: {
+                                              query: searchVal,
+                                              fields: ['title^2', 'text^1.8'],
+                                              fuzziness: 'AUTO',
+                                          },
                                       },
-                                  },
-                              ],
-                              should: [
-                                  {
-                                      multi_match: {
-                                          query: searchVal,
-                                          type: 'phrase',
-                                          slop: 10,
-                                          fields: ['title^2', 'text^1.8'],
+                                  ],
+                                  should: [
+                                      {
+                                          multi_match: {
+                                              query: searchVal,
+                                              type: 'phrase',
+                                              slop: 10,
+                                              fields: ['title^2', 'text^1.8'],
+                                          },
                                       },
-                                  },
-                              ],
+                                  ],
+                              },
                           },
                           script: {
-                              source: "_score * (doc['incoming_links'].value / 100)",
+                              source: "if(doc['incoming_links'].empty) {_score} else {_score * (doc['incoming_links'].value / 10000)}",
                           },
                       },
                   },
@@ -49,29 +51,31 @@ const searchNew = (searchVal) => {
                   from: 0,
                   query: {
                       script_score: {
-                          bool: {
-                              must: [
-                                  {
-                                      multi_match: {
-                                          query: searchVal,
-                                          fields: ['title^1.8', 'text^2'],
-                                          fuzziness: 'AUTO',
+                          query: {
+                              bool: {
+                                  must: [
+                                      {
+                                          multi_match: {
+                                              query: searchVal,
+                                              fields: ['title^1.8', 'text^2'],
+                                              fuzziness: 'AUTO',
+                                          },
                                       },
-                                  },
-                              ],
-                              should: [
-                                  {
-                                      multi_match: {
-                                          query: searchVal,
-                                          type: 'phrase',
-                                          slop: 10,
-                                          fields: ['title^1.8', 'text^2'],
+                                  ],
+                                  should: [
+                                      {
+                                          multi_match: {
+                                              query: searchVal,
+                                              type: 'phrase',
+                                              slop: 10,
+                                              fields: ['title^1.8', 'text^2'],
+                                          },
                                       },
-                                  },
-                              ],
+                                  ],
+                              },
                           },
                           script: {
-                              source: "_score * (doc['incoming_links'].value / 100)",
+                              source: "if(doc['incoming_links'].empty) {_score} else {_score * (doc['incoming_links'].value / 10000)}",
                           },
                       },
                   },
