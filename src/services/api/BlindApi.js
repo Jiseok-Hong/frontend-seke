@@ -17,7 +17,7 @@ const searchNew = (searchVal) => {
                                           multi_match: {
                                               query: searchVal,
                                               fields: ['title^2', 'text^1.8'],
-                                              fuzziness: 'AUTO',
+                                              //   fuzziness: 'AUTO',
                                           },
                                       },
                                   ],
@@ -34,7 +34,7 @@ const searchNew = (searchVal) => {
                               },
                           },
                           script: {
-                              source: "if(doc['incoming_links'].empty) {_score} else {_score * (doc['incoming_links'].value / 10000)}",
+                              source: "if(doc['incoming_links'].empty) {_score} else {_score + (doc['incoming_links'].value / 10000)}",
                           },
                       },
                   },
@@ -75,7 +75,7 @@ const searchNew = (searchVal) => {
                               },
                           },
                           script: {
-                              source: "if(doc['incoming_links'].empty) {_score} else {_score * (doc['incoming_links'].value / 10000)}",
+                              source: "if(doc['incoming_links'].empty) {_score} else {_score + (doc['incoming_links'].value / 10000)}",
                           },
                       },
                   },

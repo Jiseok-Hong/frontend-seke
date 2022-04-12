@@ -101,7 +101,6 @@ const UserFeedback = ({ dispatch, searchVal, lib }) => {
     useEffect(() => {
         if (searchVal !== null) fetchResultList();
     }, [searchVal]);
-
     return (
         <NavList>
             <SearchResult
