@@ -58,7 +58,6 @@ const searchNew = (searchVal) => {
                                           multi_match: {
                                               query: searchVal,
                                               fields: ['title^1.8', 'text^2'],
-                                              fuzziness: 'AUTO',
                                           },
                                       },
                                   ],
@@ -114,7 +113,6 @@ const searchRelevanceNew = (searchVal) => {
                                           multi_match: {
                                               query: searchVal,
                                               fields: ['title^2', 'text^1.8'],
-                                              fuzziness: 'AUTO',
                                           },
                                       },
                                   ],
@@ -155,7 +153,6 @@ const searchRelevanceNew = (searchVal) => {
                                           multi_match: {
                                               query: searchVal,
                                               fields: ['title^1.8', 'text^2'],
-                                              fuzziness: 'AUTO',
                                           },
                                       },
                                   ],
